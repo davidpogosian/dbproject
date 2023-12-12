@@ -62,6 +62,7 @@ public class QuoteDAO extends DAO {
                      "HAVING q.status = 'accepted' AND COUNT(t.tree_id) = 1";
 
         connect();
+        
 
         PreparedStatement statement = connect.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
