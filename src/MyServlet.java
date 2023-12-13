@@ -18,19 +18,7 @@ import dbpack.Request;
 import dbpack.Quote;
 import dbpack.User;
 import dbpack.Tree;
-import dbpack.TreeDAO;
-import dbpack.Quote;
-import dbpack.QuoteDAO;
-import dbpack.Order;
-import dbpack.OrderDAO;
 
-import java.io.IOException;
-import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class MyServlet extends HttpServlet {
 	RequestDAO requestDAO = new RequestDAO();
