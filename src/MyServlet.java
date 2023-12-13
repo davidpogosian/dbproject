@@ -22,7 +22,6 @@ import dbpack.Request;
 import dbpack.Quote;
 import dbpack.User;
 import dbpack.Tree;
-import dbpack.OrderDAO;
 
 
 
@@ -234,7 +233,7 @@ public class MyServlet extends HttpServlet {
 			requestDAO.updateRequestStatus(req.getParameter("request_id"), "accepted");
 			/* create work order */
 			Order new_order = new Order();
-			new_order.setQuoteId(Integer.parseInt(req.getParameter("request_id")));
+			new_order.setQuoteId(Integer.parseInt(req.getParameter("quote_id")));
 			new_order.setStatus("pending");
 			new_order.setDatePaid(new Date());
 			orderDAO.addOrder(new_order);
