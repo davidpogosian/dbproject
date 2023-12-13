@@ -18,6 +18,8 @@ import dbpack.Request;
 import dbpack.Quote;
 import dbpack.User;
 import dbpack.Tree;
+import dbpack.OrderDAO;
+
 
 
 public class MyServlet extends HttpServlet {
@@ -316,6 +318,8 @@ public class MyServlet extends HttpServlet {
 		try {
 	
 			req.setAttribute("onequote", quoteDAO.listAcceptedQuotesWithOneTree());
+			req.setAttribute("pending", quoteDAO.usersWithPendingQuotes());
+
 			req.getRequestDispatcher("/quote.jsp").forward(req, res);
 		} catch (SQLException e) {
 			e.printStackTrace(); // Handle the exception as needed
@@ -323,6 +327,7 @@ public class MyServlet extends HttpServlet {
 	}
 	public void order(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException {
 		OrderDAO orderDAO = new OrderDAO();
+		
 		try {
 	
 			req.setAttribute("good", orderDAO.listGoodClients());

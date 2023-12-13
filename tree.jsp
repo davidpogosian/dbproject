@@ -4,8 +4,55 @@
 <html>
 <head>
     <title>Tree Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .nav{
+            padding-left: 120px;
+        }
+
+        .nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: 0.3s;
+            padding: 35px;
+            
+
+        }
+
+        .nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
+
+    <nav> 
+        <div class="nav">
+            <a href="/treecutting/daveView">Home</a>
+            <a href="/treecutting/quoteView">Quotes Analysis</a>
+            <a href="/treecutting/orderView">Orders</a>
+            <a href="/treecutting/highView">Records</a>
+
+        </div>
+
+
+    </nav>
     <h2>Highest Trees</h2>
     <% 
         List<Tree> highestTrees = (List<Tree>) request.getAttribute("highestTrees");

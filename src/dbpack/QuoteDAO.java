@@ -131,6 +131,36 @@ public class QuoteDAO extends DAO {
         disconnect();
     }
 
+    public List<User> usersWithPendingQuotes() throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT DISTINCT u.user_id, u.first_name, u.last_name, u.email " +
+        "FROM Quotes q " +
+        "JOIN Requests r ON q.request_id = r.request_id " +
+        "JOIN Users u ON r.user_id = u.user_id " +
+        "WHERE q.status = 'pending';";
+
+    
+        connect();
+        PreparedStatement statement = connect.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+    
+        while (resultSet.next()) {
+            User user = new User();
+            user.setFirstName(resultSet.getString("first_name"));
+            user.setLastName(resultSet.getString("last_name"));
+            user.setEmail(resultSet.getString("email"));
+            users.add(user);
+        }
+        
+    
+        resultSet.close();
+        statement.close();
+        disconnect();
+    
+        return users;
+    }
+    
+
     // Other methods for updating, deleting, and fetching quotes by various criteria can be added here.
 
 }

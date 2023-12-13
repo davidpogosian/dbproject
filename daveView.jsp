@@ -16,8 +16,11 @@
                     background-color: #333;
                     overflow: hidden;
                 }
+                .nav{
+                    padding-left: 120px;
+                }
         
-                nav a {
+                .nav a {
                     float: left;
                     display: block;
                     color: white;
@@ -25,10 +28,12 @@
                     padding: 14px 16px;
                     text-decoration: none;
                     transition: 0.3s;
+                    padding: 35px;
+                    
 
                 }
         
-                nav a:hover {
+                .nav a:hover {
                     background-color: #ddd;
                     color: black;
                 }
@@ -42,11 +47,15 @@
         <body>
 
             <nav> 
-                <a href="/treecutting/daveView">Home</a>
-                <a href="/treecutting/quoteView">Quotes Analysis</a>
-                <a href="/treecutting/orderView">Orders</a>
-                <a href="/treecutting/treeView">Trees</a>
-                <a href="/treecutting/highView">Records</a>
+                <div class="nav">
+                    <a href="/treecutting/daveView">Home</a>
+                    <a href="/treecutting/quoteView">Quotes Analysis</a>
+                    <a href="/treecutting/orderView">Orders</a>
+                    <a href="/treecutting/treeView">Trees</a>
+                    <a href="/treecutting/highView">Records</a>
+
+                </div>
+
 
             </nav>
 
