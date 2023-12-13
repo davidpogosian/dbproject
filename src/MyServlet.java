@@ -10,10 +10,14 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.Date;
+
 import dbpack.RequestDAO;
 import dbpack.UserDAO;
 import dbpack.TreeDAO;
 import dbpack.QuoteDAO;
+import dbpack.Order;
+import dbpack.OrderDAO;
 import dbpack.Request;
 import dbpack.Quote;
 import dbpack.User;
@@ -27,6 +31,8 @@ public class MyServlet extends HttpServlet {
 	UserDAO userDAO = new UserDAO();
 	TreeDAO treeDAO = new TreeDAO();
 	QuoteDAO quoteDAO = new QuoteDAO();
+	OrderDAO orderDAO = new OrderDAO();
+
 	User user = null;
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) {
@@ -69,6 +75,9 @@ public class MyServlet extends HttpServlet {
 				break;
 			case "/handleNewRequest":
 				handleNewRequest(req, res);
+				break;
+			case "/handlePayOrder":
+				handlePayOrder(req, res);
 				break;
 			case "/daveView":
 				try {
@@ -208,12 +217,27 @@ public class MyServlet extends HttpServlet {
 		}
 	}
 
+	public void handlePayOrder(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		try {
+			orderDAO.updateOrderStatus(req.getParameter("order_id"), "paid");
+			userView(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void handleAcceptQuote(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		try {
 			/* update quote in db */
 			quoteDAO.updateQuoteStatus(req.getParameter("quote_id"), "accepted");
 			/* update request in db */
 			requestDAO.updateRequestStatus(req.getParameter("request_id"), "accepted");
+			/* create work order */
+			Order new_order = new Order();
+			new_order.setQuoteId(Integer.parseInt(req.getParameter("request_id")));
+			new_order.setStatus("pending");
+			new_order.setDatePaid(new Date());
+			orderDAO.addOrder(new_order);
 			/* redirect */
 			userView(req, res);
 		} catch (SQLException e) {
@@ -254,6 +278,7 @@ public class MyServlet extends HttpServlet {
 	public void userView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setAttribute("first_name", user.getFirstName());
 		try {
+			req.setAttribute("pending_orders", orderDAO.getPendingOrdersByUserId(user.getUserId()));
 			req.setAttribute("requests", requestDAO.getRequestsByUserId(user.getUserId()));
 			req.setAttribute("quotes", quoteDAO.getAllPendingQuotesByUserId(user.getUserId()));
 			req.getRequestDispatcher("userView.jsp").forward(req, res);
@@ -274,6 +299,8 @@ public class MyServlet extends HttpServlet {
 
 	public void daveView(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException {
 		req.setAttribute("requests", requestDAO.getAllPendingRequests());
+		req.setAttribute("pending_orders", orderDAO.getPendingOrders());
+		req.setAttribute("paid_orders", orderDAO.getPaidOrders());
 		req.getRequestDispatcher("daveView.jsp").forward(req, res);
 	}
 

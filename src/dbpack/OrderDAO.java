@@ -5,6 +5,103 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAO extends DAO {
+    public void addOrder(Order new_order) throws SQLException {
+        connect();
+        String query = "INSERT INTO Orders "
+            + "(quote_id, status, date_paid) "
+            + "VALUES (?, ?, ?)";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(query);
+        preparedStatement.setInt(1, new_order.getQuoteId());
+        preparedStatement.setString(2, new_order.getStatus());
+        preparedStatement.setTimestamp(3,  new Timestamp(new_order.getDatePaid().getTime()));
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect();
+    }
+
+    public Order[] getPendingOrders() throws SQLException {
+        connect();
+        String query = "SELECT * FROM Orders WHERE status = 'pending'";
+        statement = (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(query);
+        resultSet.last();
+    	int set_size = resultSet.getRow();
+    	resultSet.beforeFirst();
+        Order[] orders = new Order[set_size];
+        for (int i = 0; i < set_size; i++) {
+            resultSet.next();
+            orders[i] = new Order();
+            orders[i].setOrderId(resultSet.getInt("order_id"));
+            orders[i].setQuoteId(resultSet.getInt("quote_id"));
+            orders[i].setStatus(resultSet.getString("status"));
+            orders[i].setDatePaid(resultSet.getDate("date_paid"));
+        }
+        resultSet.close();
+        disconnect();
+        return orders;
+    }
+
+    public Order[] getPendingOrdersByUserId(String user_id) throws SQLException {
+        connect();
+        String query = "SELECT Orders.* FROM Orders " +
+                        "JOIN Quotes ON Orders.quote_id = Quotes.quote_id " +
+                        "JOIN Requests ON Quotes.request_id = Requests.request_id " +
+                        "WHERE Requests.user_id = ? " +
+                        "AND Orders.status = 'pending'";
+        PreparedStatement preparedStatement = connect.prepareStatement(query);
+        preparedStatement.setString(1, user_id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.last();
+    	int set_size = resultSet.getRow();
+    	resultSet.beforeFirst();
+        Order[] orders = new Order[set_size];
+        for (int i = 0; i < set_size; i++) {
+            resultSet.next();
+            orders[i] = new Order();
+            orders[i].setOrderId(resultSet.getInt("order_id"));
+            orders[i].setQuoteId(resultSet.getInt("quote_id"));
+            orders[i].setStatus(resultSet.getString("status"));
+            orders[i].setDatePaid(resultSet.getDate("date_paid"));
+        }
+        resultSet.close();
+        disconnect();
+        return orders;
+    }
+
+    public Order[] getPaidOrders() throws SQLException {
+        connect();
+        String query = "SELECT * FROM Orders WHERE status = 'paid'";
+        statement = (Statement) connect.createStatement();
+        resultSet = statement.executeQuery(query);
+        resultSet.last();
+    	int set_size = resultSet.getRow();
+    	resultSet.beforeFirst();
+        Order[] orders = new Order[set_size];
+        for (int i = 0; i < set_size; i++) {
+            resultSet.next();
+            orders[i] = new Order();
+            orders[i].setOrderId(resultSet.getInt("order_id"));
+            orders[i].setQuoteId(resultSet.getInt("quote_id"));
+            orders[i].setStatus(resultSet.getString("status"));
+            orders[i].setDatePaid(resultSet.getDate("date_paid"));
+        }
+        resultSet.close();
+        disconnect();
+        return orders;
+    }
+
+    public void updateOrderStatus(String order_id, String new_status) throws SQLException {
+        connect();
+        String query = "UPDATE Orders " +
+        "SET status = ?" +
+        "WHERE order_id = ?";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(query);
+        preparedStatement.setString(1, new_status);        
+        preparedStatement.setString(2, order_id);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect();
+    }
 
 
     public List<User> listGoodClients() throws SQLException {
@@ -77,6 +174,7 @@ public class OrderDAO extends DAO {
         PreparedStatement statement = connect.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
     
+
         while (resultSet.next()) {
             Order order = new Order();
             // Assuming Order class has these setters

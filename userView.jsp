@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
     <%@ page import="dbpack.Request" %>
     <%@ page import="dbpack.Quote" %>
+    <%@ page import="dbpack.Order" %>
+
         <!DOCTYPE html>
         <html>
 
@@ -48,14 +50,6 @@
                     <% } %>
                 </table>
 
-                <!--
-"    quote_id INT AUTO_INCREMENT PRIMARY KEY,"
-        	+ "    request_id INTEGER,"
-        	+ "    price DOUBLE,"
-        	+ "    start_date DATETIME,"
-        	+ "    end_date DATETIME,"
-        	+ "    status ENUM('pending', 'accepted', 'denied'),"
-                -->
                 <h2>Your pending quotes</h2>
                 <table border="1">
                     <tr>
@@ -96,6 +90,39 @@
                                     <input type="hidden" name="quote_id" value="<%= quote.getQuoteId() %>"> <!-- Add a hidden input field -->
                                     <input type="hidden" name="request_id" value="<%= quote.getRequestId() %>"> <!-- Add a hidden input field -->
                                     <input type="submit" value="Deny">
+                                </form>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>
+
+                <h2>Pending Orders Information</h2>
+                <table border="1">
+                    <tr>
+                        <th>order_id</th>
+                        <th>quote_id</th>
+                        <th>date_paid</th>
+                        <th>status</th>
+                        <th>pay</th>
+                    </tr>
+                    <% Order[] pending_orders=(Order[]) request.getAttribute("pending_orders"); for(Order order : pending_orders) { %>
+                        <tr>
+                            <td>
+                                <%=order.getOrderId() %>
+                            </td>
+                            <td>
+                                <%=order.getQuoteId() %>
+                            </td>
+                            <td>
+                                <%=order.getDatePaid() %>
+                            </td>
+                            <td>
+                                <%=order.getStatus() %>
+                            </td>
+                            <td>
+                                <form action="handlePayOrder">
+                                    <input type="hidden" name="order_id" value="<%= order.getOrderId() %>"> <!-- Add a hidden input field -->
+                                    <input type="submit" value="Pay">
                                 </form>
                             </td>
                         </tr>
