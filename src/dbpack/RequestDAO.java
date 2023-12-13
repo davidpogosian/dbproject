@@ -65,4 +65,17 @@ public class RequestDAO extends DAO {
         preparedStatement.close();
         disconnect();
     }
+
+    public void updateRequestStatus(String request_id, String new_status) throws SQLException {
+        connect();
+        String query = "UPDATE Requests " +
+        "SET status = ?" +
+        "WHERE request_id = ?";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(query);
+        preparedStatement.setString(1, new_status);        
+        preparedStatement.setString(2, request_id);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect();
+    }
 }

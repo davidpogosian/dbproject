@@ -1,6 +1,9 @@
 package dbpack;
 
-import java.sql.*;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +88,47 @@ public class QuoteDAO extends DAO {
         disconnect();
 
         return quotes;
+    }
+
+    public Quote[] getAllPendingQuotesByUserId(String user_id) throws SQLException {
+        connect();
+        String query = "SELECT Quotes.* FROM Quotes " +
+        "JOIN Requests ON Quotes.request_id = Requests.request_id " +
+        "WHERE Requests.user_id = ? AND Quotes.status = 'pending'";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(query);
+        preparedStatement.setString(1, user_id);
+        resultSet = preparedStatement.executeQuery();
+        resultSet.last();
+    	int set_size = resultSet.getRow();
+    	resultSet.beforeFirst();
+        Quote[] quotes = new Quote[set_size];
+        for (int i = 0; i < set_size; i++) {
+            resultSet.next();
+            quotes[i] = new Quote();
+            quotes[i].setQuoteId(Integer.parseInt(resultSet.getString("quote_id")));
+            quotes[i].setRequestId(Integer.parseInt(resultSet.getString("request_id")));
+            quotes[i].setPrice(Double.parseDouble(resultSet.getString("price")));
+            quotes[i].setStartDate(resultSet.getDate("start_date"));
+            quotes[i].setEndDate(resultSet.getDate("end_date"));
+            quotes[i].setStatus(resultSet.getString("status"));
+        }
+        preparedStatement.close();
+        resultSet.close();
+        disconnect();
+        return quotes;
+    }
+
+    public void updateQuoteStatus(String quote_id, String new_status) throws SQLException {
+        connect();
+        String query = "UPDATE Quotes " +
+        "SET status = ?" +
+        "WHERE quote_id = ?";
+        preparedStatement = (PreparedStatement) connect.prepareStatement(query);
+        preparedStatement.setString(1, new_status);        
+        preparedStatement.setString(2, quote_id);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        disconnect();
     }
 
     // Other methods for updating, deleting, and fetching quotes by various criteria can be added here.

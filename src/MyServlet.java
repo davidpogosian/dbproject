@@ -18,19 +18,7 @@ import dbpack.Request;
 import dbpack.Quote;
 import dbpack.User;
 import dbpack.Tree;
-import dbpack.TreeDAO;
-import dbpack.Quote;
-import dbpack.QuoteDAO;
-import dbpack.Order;
-import dbpack.OrderDAO;
 
-import java.io.IOException;
-import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class MyServlet extends HttpServlet {
 	RequestDAO requestDAO = new RequestDAO();
@@ -54,6 +42,12 @@ public class MyServlet extends HttpServlet {
 				break;
 			case "/handleNewQuote":
 				handleNewQuote(req, res);
+				break;
+			case "/handleAcceptQuote":
+				handleAcceptQuote(req, res);
+				break;
+			case "/handleDenyQuote":
+				handleDenyQuote(req, res);
 				break;
 			case "/requestView":
 				requestView(req, res);
@@ -212,6 +206,32 @@ public class MyServlet extends HttpServlet {
 		}
 	}
 
+	public void handleAcceptQuote(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		try {
+			/* update quote in db */
+			quoteDAO.updateQuoteStatus(req.getParameter("quote_id"), "accepted");
+			/* update request in db */
+			requestDAO.updateRequestStatus(req.getParameter("request_id"), "accepted");
+			/* redirect */
+			userView(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void handleDenyQuote(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		try {
+			/* update quote in db */
+			quoteDAO.updateQuoteStatus(req.getParameter("quote_id"), "denied");
+			/* update request in db */
+			requestDAO.updateRequestStatus(req.getParameter("request_id"), "accepted");
+			/* redirect */
+			userView(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void addTree(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Tree newTree = new Tree();
 		newTree.setRequestId(Integer.parseInt(req.getParameter("request_id")));
@@ -233,10 +253,11 @@ public class MyServlet extends HttpServlet {
 		req.setAttribute("first_name", user.getFirstName());
 		try {
 			req.setAttribute("requests", requestDAO.getRequestsByUserId(user.getUserId()));
+			req.setAttribute("quotes", quoteDAO.getAllPendingQuotesByUserId(user.getUserId()));
+			req.getRequestDispatcher("userView.jsp").forward(req, res);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		req.getRequestDispatcher("userView.jsp").forward(req, res);
 	}
 
 	public void requestView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

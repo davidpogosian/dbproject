@@ -3,4 +3,4 @@ for /r %%v in (src\*.java) do javac -cp "C:\Users\minha\apache-tomcat-9.0.80\web
 ECHO src files compiled
 C:\Users\minha\apache-tomcat-9.0.80\bin\startup.bat
 pause
-@ECHO ON
+@ECHO ON
