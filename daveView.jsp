@@ -17,7 +17,7 @@
                     <th>request_name</th>
                     <th>user_id</th>
                     <th>status</th>
-                    <th>Price</th>
+                    <th>Submit Quote</th>
                 </tr>
                 <% Request[] requests=(Request[]) request.getAttribute("requests"); for(Request req : requests) { %>
                     <tr>
@@ -35,15 +35,19 @@
                             <%=req.getStatus() %>
                         </td>
                         <td>
-                            <form action="submitQuote">
-                                <input type="number" name="Price" id="">
+                            <form action="handleNewQuote">
+                                <input type="hidden" name="request_id" value="<%= req.getRequestId() %>"> <!-- Add a hidden input field -->
+                                <p>price:</p>
+                                <input type="number" name="price" id="">
+                                <p>start date:</p>
+                                <input type="date" name="start_date">
+                                <p>end date:</p>
+                                <input type="date" name="end_date">
                                 <input type="submit" value="Send">
-                                </form>
+                            </form>
                         </td>
-                       
                     </tr>
-                    <% } %>
-
+                <% } %>
             </table>
 
         </body>
