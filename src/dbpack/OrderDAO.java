@@ -7,6 +7,7 @@ import java.util.List;
 public class OrderDAO extends DAO {
     public void addOrder(Order new_order) throws SQLException {
         connect();
+        System.out.printf("going to insert into ORDERS quote_id = %d ", new_order.getQuoteId());
         String query = "INSERT INTO Orders "
             + "(quote_id, status, date_paid) "
             + "VALUES (?, ?, ?)";
