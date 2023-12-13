@@ -110,6 +110,13 @@ public class MyServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
+			case "/orderView":
+				try {
+					order(req, res);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
 			
 		}
 	}
@@ -289,6 +296,18 @@ public class MyServlet extends HttpServlet {
 	
 			req.setAttribute("onequote", quoteDAO.listAcceptedQuotesWithOneTree());
 			req.getRequestDispatcher("/quote.jsp").forward(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace(); // Handle the exception as needed
+		}
+	}
+	public void order(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException {
+		OrderDAO orderDAO = new OrderDAO();
+		try {
+	
+			req.setAttribute("good", orderDAO.listGoodClients());
+			req.setAttribute("bad", orderDAO.listBadClients());
+			req.setAttribute("overdue", orderDAO.listOverdueBills());
+			req.getRequestDispatcher("/order.jsp").forward(req, res);
 		} catch (SQLException e) {
 			e.printStackTrace(); // Handle the exception as needed
 		}

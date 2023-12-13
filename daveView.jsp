@@ -7,9 +7,49 @@
             <meta charset="UTF-8">
             <title>Dave's Tree View</title>
             <link rel="stylesheet" href="/css/index.css" />
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                }
+        
+                nav {
+                    background-color: #333;
+                    overflow: hidden;
+                }
+        
+                nav a {
+                    float: left;
+                    display: block;
+                    color: white;
+                    text-align: center;
+                    padding: 14px 16px;
+                    text-decoration: none;
+                    transition: 0.3s;
+
+                }
+        
+                nav a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+        
+                .active {
+                    background-color: #4CAF50;
+                }
+            </style>
         </head>
 
         <body>
+
+            <nav> 
+                <a href="/treecutting/daveView">Home</a>
+                <a href="/treecutting/quoteView">Quotes Analysis</a>
+                <a href="/treecutting/orderView">Orders</a>
+                <a href="/treecutting/treeView">Trees</a>
+                <a href="/treecutting/highView">Records</a>
+
+            </nav>
+
             <h1>Requests Information</h1>
             <table border="1">
                 <tr>

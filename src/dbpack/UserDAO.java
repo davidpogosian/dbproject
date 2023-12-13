@@ -7,12 +7,12 @@ import java.io.IOException;
 public class UserDAO extends DAO {
 
     public UserDAO() {
-        try {
-            System.out.println("UserDAO reset database");
-            resetDatabase();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     System.out.println("UserDAO reset database");
+        //     //resetDatabase();
+        // } catch (SQLException | IOException e) {
+        //     e.printStackTrace();
+        // }
     }
 
     public String getUserId(String email) throws SQLException {
