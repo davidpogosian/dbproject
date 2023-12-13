@@ -6,10 +6,16 @@ import javax.servlet.ServletException;
 import java.sql.SQLException;
 import java.io.IOException;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import dbpack.RequestDAO;
-import dbpack.Request;
 import dbpack.UserDAO;
 import dbpack.TreeDAO;
+import dbpack.QuoteDAO;
+import dbpack.Request;
+import dbpack.Quote;
 import dbpack.User;
 import dbpack.Tree;
 
@@ -17,6 +23,7 @@ public class MyServlet extends HttpServlet {
 	RequestDAO requestDAO = new RequestDAO();
 	UserDAO userDAO = new UserDAO();
 	TreeDAO treeDAO = new TreeDAO();
+	QuoteDAO quoteDAO = new QuoteDAO();
 	User user = null;
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) {
@@ -32,13 +39,8 @@ public class MyServlet extends HttpServlet {
 			case "/login":
 				req.getRequestDispatcher("login.jsp").forward(req, res);
 				break;
-			case "/submitQuote":
-				System.out.println("Quote received");
-				try {
-					daveView(req, res);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			case "/handleNewQuote":
+				handleNewQuote(req, res);
 				break;
 			case "/requestView":
 				requestView(req, res);
@@ -153,6 +155,21 @@ public class MyServlet extends HttpServlet {
 		userView(req, res);
 	}
 
+	public void handleNewQuote(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		Quote newQuote = new Quote();
+		newQuote.setRequestId(Integer.parseInt(req.getParameter("request_id")));
+		newQuote.setPrice(Double.parseDouble(req.getParameter("price")));
+		newQuote.setStartDate(convertStringToTimestamp(req.getParameter("start_date")));
+		newQuote.setEndDate(convertStringToTimestamp(req.getParameter("end_date")));
+		newQuote.setStatus("pending");
+		try {
+			quoteDAO.addQuote(newQuote);
+			daveView(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void addTree(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		Tree newTree = new Tree();
 		newTree.setRequestId(Integer.parseInt(req.getParameter("request_id")));
@@ -174,15 +191,6 @@ public class MyServlet extends HttpServlet {
 		req.setAttribute("first_name", user.getFirstName());
 		try {
 			req.setAttribute("requests", requestDAO.getRequestsByUserId(user.getUserId()));
-			// Request[] requests = requestDAO.getRequestsByUserId(user.getUserId());
-			// String[] existing_request_names = new String[requests.length];
-			// Integer[] existing_request_ids = new Integer[requests.length];
-			// for (int i = 0; i < requests.length; i++) {
-			// 	existing_request_names[i] = requests[i].getRequestName();
-			// 	existing_request_ids[i] = Integer.parseInt(requests[i].getRequestId());
-			// }
-			// req.setAttribute("existing_request_names", existing_request_names);
-			// req.setAttribute("existing_request_ids", existing_request_ids);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -203,6 +211,24 @@ public class MyServlet extends HttpServlet {
 		req.setAttribute("requests", requestDAO.getAllPendingRequests());
 		req.getRequestDispatcher("daveView.jsp").forward(req, res);
 	}
+
+	// utility
+	private Timestamp convertStringToTimestamp(String dateString) {
+        if (dateString != null && !dateString.isEmpty()) {
+            try {
+                // Define the date format based on the format used in the form
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                // Parse the string and convert it to a Timestamp
+                java.util.Date parsedDate = dateFormat.parse(dateString);
+                return new Timestamp(parsedDate.getTime());
+            } catch (ParseException e) {
+                // Handle the parsing exception (invalid date format)
+                e.printStackTrace(); // Log the exception or handle it appropriately
+            }
+        }
+        return null; // Return null if the dateString is null or empty
+    }
 }
 
 

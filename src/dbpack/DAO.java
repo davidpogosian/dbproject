@@ -96,7 +96,7 @@ public class DAO {
         String[] images_table_commands = {
         	"drop table if exists Images",
         	"CREATE TABLE Images("
-        	+ "    image_id INT PRIMARY KEY,"
+        	+ "    image_id INT AUTO_INCREMENT PRIMARY KEY,"
         	+ "    tree_id INT,"
         	+ "    FOREIGN KEY (tree_id) REFERENCES Trees(tree_id),"
         	+ "    image_name VARCHAR(255),"
@@ -106,36 +106,33 @@ public class DAO {
         String[] notes_table_commands = {
         	"drop table if exists Notes",
         	"CREATE TABLE Notes("
-        	+ "    note_id INTEGER,"
+        	+ "    note_id INT AUTO_INCREMENT PRIMARY KEY,"
         	+ "    request_id INTEGER,"
         	+ "    content VARCHAR(255),"
         	+ "    date DATETIME,"
         	+ "    author INTEGER,"
-        	+ "    PRIMARY KEY (note_id),"
         	+ "    FOREIGN KEY (request_id) REFERENCES Requests(request_id)"
         	+ ");"
         };
         String[] quotes_table_commands = {
         	"drop table if exists Quotes",
         	"CREATE TABLE Quotes("
-        	+ "    quote_id INTEGER,"
+        	+ "    quote_id INT AUTO_INCREMENT PRIMARY KEY,"
         	+ "    request_id INTEGER,"
         	+ "    price DOUBLE,"
         	+ "    start_date DATETIME,"
         	+ "    end_date DATETIME,"
         	+ "    status ENUM('pending', 'accepted', 'denied'),"
-        	+ "    PRIMARY KEY (quote_id),"
         	+ "    FOREIGN KEY (request_id) REFERENCES Requests(request_id)"
         	+ ");"
         };
         String[] orders_table_commands = {
         	"drop table if exists Orders",
         	"CREATE TABLE Orders("
-        	+ "    order_id INTEGER,"
+        	+ "    order_id INT AUTO_INCREMENT PRIMARY KEY,"
         	+ "    quote_id INTEGER,"
         	+ "    status ENUM('paid', 'pending'),"
         	+ "    date_paid DATE,"
-        	+ "    PRIMARY KEY (order_id),"
         	+ "    FOREIGN KEY (quote_id) REFERENCES Quotes(quote_id)"
         	+ ");"
         };
