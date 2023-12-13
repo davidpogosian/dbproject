@@ -47,7 +47,6 @@ public class RequestDAO extends DAO {
             requests[i].setStatus(resultSet.getString("status"));
             requests[i].setUserId(resultSet.getString("user_id"));
         }
-        preparedStatement.close();
         resultSet.close();
         disconnect();
         return requests;

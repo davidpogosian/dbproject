@@ -1,6 +1,5 @@
 <%@ page import="java.util.List" %>
 <%@ page import="dbpack.User" %>
-<%@ page import="dbpack.TreeDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,11 +8,9 @@
 <body>
     <h2>Users With Highest Trees</h2>
     <% 
-        TreeDAO treeDAO = new TreeDAO();
-        List<User> usersWithHighestTrees = treeDAO.getUsersWithHighestTrees();
+        List<User> usersWithHighestTrees = (List<User>) request.getAttribute("hightreeuser");
+        if (usersWithHighestTrees != null && !usersWithHighestTrees.isEmpty()) {
     %>
-
-    <% if (!usersWithHighestTrees.isEmpty()) { %>
         <table border="1">
             <tr>
                 <th>User ID</th>

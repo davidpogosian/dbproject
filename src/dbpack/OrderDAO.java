@@ -6,9 +6,7 @@ import java.util.List;
 
 public class OrderDAO extends DAO {
 
-    // ... other DAO methods ...
 
-    // Method to list good clients
     public List<User> listGoodClients() throws SQLException {
         List<User> goodClients = new ArrayList<>();
         String sql = "SELECT u.user_id, u.first_name, u.last_name, u.email FROM Users u " +
