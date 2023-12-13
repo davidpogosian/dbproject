@@ -18,6 +18,19 @@ import dbpack.Request;
 import dbpack.Quote;
 import dbpack.User;
 import dbpack.Tree;
+import dbpack.TreeDAO;
+import dbpack.Quote;
+import dbpack.QuoteDAO;
+import dbpack.Order;
+import dbpack.OrderDAO;
+
+import java.io.IOException;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class MyServlet extends HttpServlet {
 	RequestDAO requestDAO = new RequestDAO();
@@ -82,6 +95,28 @@ public class MyServlet extends HttpServlet {
 				}
 				res.sendRedirect("rootView.jsp");
 				break;
+			case "/treeView":
+				try {
+					tree(req, res);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			case "/highView":
+				try {
+					high(req, res);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			case "/quoteView":
+				try {
+					quote(req, res);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			
 		}
 	}
 
@@ -245,6 +280,61 @@ public class MyServlet extends HttpServlet {
 		req.getRequestDispatcher("daveView.jsp").forward(req, res);
 	}
 
+
+	public void tree(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException {
+		TreeDAO treeDAO = new TreeDAO();
+		try {
+			// Fetching the list of highest trees
+
+	
+			// Setting attributes for the JSP
+			req.setAttribute("highestTrees", treeDAO.findHighestTreesCut());
+			
+			req.setAttribute("allTrees", treeDAO.listAllTrees());
+	
+			// Forwarding request to tree.jsp
+			req.getRequestDispatcher("/tree.jsp").forward(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace(); // Handle the exception as needed
+		}
+	}
+
+
+	public void high(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException {
+		TreeDAO treeDAO = new TreeDAO();
+		try {
+			// Fetching the list of highest trees
+
+	
+			// Setting attributes for the JSP
+			req.setAttribute("hightreeuser", treeDAO.getUsersWithHighestTrees());
+	
+			// Forwarding request to tree.jsp
+			req.getRequestDispatcher("/high.jsp").forward(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace(); // Handle the exception as needed
+		}
+	}
+
+	public void quote(HttpServletRequest req, HttpServletResponse res) throws SQLException, ServletException, IOException {
+		QuoteDAO quoteDAO = new QuoteDAO();
+		try {
+	
+			req.setAttribute("onequote", quoteDAO.listAcceptedQuotesWithOneTree());
+			req.getRequestDispatcher("/quote.jsp").forward(req, res);
+		} catch (SQLException e) {
+			e.printStackTrace(); // Handle the exception as needed
+		}
+	}
+	
+
+
+
+
+
+
+
+
 	// utility
 	private Timestamp convertStringToTimestamp(String dateString) {
         if (dateString != null && !dateString.isEmpty()) {
@@ -262,6 +352,12 @@ public class MyServlet extends HttpServlet {
         }
         return null; // Return null if the dateString is null or empty
     }
+
 }
+
+
+
+
+
 
 

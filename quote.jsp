@@ -1,6 +1,5 @@
 <%@ page import="java.util.List" %>
 <%@ page import="dbpack.Quote" %>
-<%@ page import="dbpack.QuoteDAO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,16 +8,9 @@
 <body>
     <h2>Accepted Quotes Involving Only One Tree</h2>
     <% 
-        QuoteDAO quoteDAO = new QuoteDAO();
-        List<Quote> quotes = null;
-        try {
-            quotes = quoteDAO.listAcceptedQuotesWithOneTree();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<Quote> quotes = (List<Quote>) request.getAttribute("onequote");
+        if (quotes != null && !quotes.isEmpty()) { 
     %>
-
-    <% if (quotes != null && !quotes.isEmpty()) { %>
         <table border="1">
             <tr>
                 <th>Quote ID</th>
@@ -39,8 +31,12 @@
                 </tr>
             <% } %>
         </table>
-    <% } else { %>
+    <% 
+        } else { 
+    %>
         <p>No quotes found.</p>
-    <% } %>
+    <% 
+        } 
+    %>
 </body>
 </html>

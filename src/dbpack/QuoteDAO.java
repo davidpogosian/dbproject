@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class QuoteDAO extends DAO {
 
     // Method to add a new quote
