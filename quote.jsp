@@ -104,6 +104,24 @@
         }
     %>
 
+    <h2>Users Without Denied or Pending Quotes</h2>
+    <% 
+        List<User> usersWithoutDeniedOrPendingQuotes = (List<User>) request.getAttribute("usersList");
+        if (usersWithoutDeniedOrPendingQuotes != null && !usersWithoutDeniedOrPendingQuotes.isEmpty()) {
+    %>
+        <ul>
+            <% for (User user : usersWithoutDeniedOrPendingQuotes) { %>
+                <li><%= user.getFirstName() %> <%= user.getLastName() %> - <%= user.getEmail() %></li>
+            <% } %>
+        </ul>
+    <% 
+        } else {
+    %>
+        <p>No users found without denied or pending quotes.</p>
+    <% 
+        }
+    %>
+
 
 </body>
 </html>

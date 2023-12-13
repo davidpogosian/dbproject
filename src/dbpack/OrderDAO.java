@@ -111,7 +111,7 @@ public class OrderDAO extends DAO {
                      "JOIN Quotes q ON r.request_id = q.request_id " +
                      "JOIN Orders o ON q.quote_id = o.quote_id " +
                      "WHERE o.status = 'paid' AND " +
-                     "TIMESTAMPDIFF(HOUR, q.end_date, o.date_paid) <= 24 " +
+                     "TIMESTAMPDIFF(HOUR, q.end_date, o.date_paid) <= 70 " +
                      "GROUP BY u.user_id, u.first_name, u.last_name, u.email";
 
         connect();
@@ -141,7 +141,7 @@ public class OrderDAO extends DAO {
                      "JOIN Requests r ON u.user_id = r.user_id " +
                      "JOIN Quotes q ON r.request_id = q.request_id " +
                      "JOIN Orders o ON q.quote_id = o.quote_id " +
-                     "WHERE (o.status = 'pending' AND DATEDIFF(CURDATE(), q.end_date) > 7) " +
+                     "WHERE (o.status = 'pending' AND TIMESTAMPDIFF(DAY, q.end_date, CURDATE()) > 7) " +
                      "GROUP BY u.user_id, u.first_name, u.last_name, u.email";
 
         connect();

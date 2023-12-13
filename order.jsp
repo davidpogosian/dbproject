@@ -121,22 +121,6 @@
         }
     %>
 
-    <h3>Users with Pending Quotes</h3>
-    <% 
-        List<User> usersWithPendingQuotes = (List<User>) request.getAttribute("pending");
-        if (usersWithPendingQuotes != null && !usersWithPendingQuotes.isEmpty()) {
-    %>
-        <ul>
-            <% for (User user : usersWithPendingQuotes) { %>
-                <li><%= user.getFirstName() %> <%= user.getLastName() %> - <%= user.getEmail() %></li>
-            <% } %>
-        </ul>
-    <% 
-        } else {
-    %>
-        <p>No users with pending quotes found.</p>
-    <% 
-        }
-    %>
+
 </body>
 </html>

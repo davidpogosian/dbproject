@@ -346,6 +346,7 @@ public class MyServlet extends HttpServlet {
 	
 			req.setAttribute("onequote", quoteDAO.listAcceptedQuotesWithOneTree());
 			req.setAttribute("pending", quoteDAO.usersWithPendingQuotes());
+			req.setAttribute("accepted", quoteDAO.usersWithoutDeniedOrPendingQuotes());
 
 			req.getRequestDispatcher("/quote.jsp").forward(req, res);
 		} catch (SQLException e) {
