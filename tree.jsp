@@ -48,6 +48,7 @@
             <a href="/treecutting/quoteView">Quotes Analysis</a>
             <a href="/treecutting/orderView">Orders</a>
             <a href="/treecutting/highView">Records</a>
+            <a href="/treecutting/statistics">Statistics</a>
 
         </div>
 

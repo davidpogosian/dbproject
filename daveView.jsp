@@ -51,12 +51,13 @@
             <a href="/treecutting/orderView">Orders</a>
             <a href="/treecutting/treeView">Trees</a>
             <a href="/treecutting/highView">Records</a>
+            <a href="/treecutting/statistics">Statistics</a>
 
         </div>
 
 
     </nav>
-    <h1>Requests Information</h1>
+    <h1>Requests</h1>
     <table border="1">
         <tr>
             <th>request_id</th>
@@ -97,7 +98,7 @@
     </table>
 
 
-    <h1>Pending Orders Information</h1>
+    <h1>Pending Orders</h1>
     <table border="1">
         <tr>
             <th>order_id</th>
@@ -123,7 +124,7 @@
         <% } %>
     </table>
 
-    <h1>Paid Orders Information</h1>
+    <h1>Paid Orders</h1>
     <table border="1">
         <tr>
             <th>order_id</th>

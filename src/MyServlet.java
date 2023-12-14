@@ -117,7 +117,7 @@ public class MyServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
-			case "statistics":
+			case "/statistics":
 				statisticsPage(req, res);
 				break;
 			case "/orderView":

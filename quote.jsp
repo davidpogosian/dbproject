@@ -49,6 +49,7 @@
             <a href="/treecutting/orderView">Orders</a>
             <a href="/treecutting/treeView">Trees</a>
             <a href="/treecutting/highView">Records</a>
+            <a href="/treecutting/statistics">Statistics</a>
 
         </div>
 

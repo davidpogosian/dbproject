@@ -11,12 +11,12 @@ import java.util.List;
 public class UserDAO extends DAO {
 
     public UserDAO() {
-        try {
-            System.out.println("UserDAO reset database");
-            resetDatabase();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     System.out.println("UserDAO reset database");
+        //     resetDatabase();
+        // } catch (SQLException | IOException e) {
+        //     e.printStackTrace();
+        // }
     }
 
     public List<Statistic> geStatistics() throws SQLException {

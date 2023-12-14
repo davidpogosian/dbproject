@@ -68,7 +68,9 @@ public class DAO {
             "VALUES " +
             "('root', 'pass1234', 'root', 'default', 'default', '0000', 'Default', 'Default', '0', '00000', '2020-01-01', '12345678', '2000-06-27', '222'), " +
             "('user2', 'dave', 'dave@gmail.com', 'Dave', 'Crazy', '1234', 'whatever street', 'detroit', 'MI', '48202', '2000-06-27', '12345678', '2000-06-27', '222'), " +
-            "('user3', 'don123', 'don@gmail.com', 'Don', 'Cummings', '1000', 'hi street', 'mama', 'MO', '12345', '1969-03-20', '12345678', '2000-06-27', '222')"
+            "('user3', 'david', 'david@gmail.com', 'David', 'noobdev', '1234', 'whatever street', 'detroit', 'MI', '48202', '2000-06-27', '12345678', '2000-06-27', '222'), " +
+            "('user4', 'minhaj', 'minhaj@gmail.com', 'minhaj', 'noobdev', '1234', 'whatever street', 'detroit', 'MI', '48202', '2000-06-27', '12345678', '2000-06-27', '222'), " +
+            "('user5', 'don123', 'don@gmail.com', 'Don', 'Cummings', '1000', 'hi street', 'mama', 'MO', '12345', '1969-03-20', '12345678', '2000-06-27', '222')"
         };
         
         String[] requests_table_commands = {
