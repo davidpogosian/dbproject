@@ -54,7 +54,7 @@
 
 
     </nav>
-    <h2>Accepted Quotes Involving Only One Tree</h2>
+    <h2>One tree quotes</h2>
     <% 
         List<Quote> quotes = (List<Quote>) request.getAttribute("onequote");
         if (quotes != null && !quotes.isEmpty()) { 
@@ -86,7 +86,7 @@
     <% 
         } 
     %>
-    <h2>Users with Pending Quotes</h2>
+    <h2>Prospective clients</h2>
     <% 
         List<User> usersWithPendingQuotes = (List<User>) request.getAttribute("pending");
         if (usersWithPendingQuotes != null && !usersWithPendingQuotes.isEmpty()) {
@@ -104,9 +104,9 @@
         }
     %>
 
-    <h2>Users Without Denied or Pending Quotes</h2>
+    <h2>Easy Clients</h2>
     <% 
-        List<User> usersWithoutDeniedOrPendingQuotes = (List<User>) request.getAttribute("usersList");
+        List<User> usersWithoutDeniedOrPendingQuotes = (List<User>) request.getAttribute("accepted");
         if (usersWithoutDeniedOrPendingQuotes != null && !usersWithoutDeniedOrPendingQuotes.isEmpty()) {
     %>
         <ul>

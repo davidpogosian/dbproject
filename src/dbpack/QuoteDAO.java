@@ -166,7 +166,7 @@ public class QuoteDAO extends DAO {
                      "WHERE NOT EXISTS (" +
                      "    SELECT 1 FROM Requests r " +
                      "    JOIN Quotes q ON r.request_id = q.request_id " +
-                     "    WHERE r.user_id = u.user_id AND (q.status = 'denied' OR q.status = 'pending')" +
+                     "    WHERE r.user_id = u.user_id AND (q.status = 'denied')" +
                      ");";
     
         connect();
@@ -175,7 +175,7 @@ public class QuoteDAO extends DAO {
     
         while (resultSet.next()) {
             User user = new User();
-            user.setUserId(resultSet.getString("user_id")); // Assuming user_id is a String
+            user.setUserId(resultSet.getString("user_id")); 
             user.setFirstName(resultSet.getString("first_name"));
             user.setLastName(resultSet.getString("last_name"));
             user.setEmail(resultSet.getString("email"));

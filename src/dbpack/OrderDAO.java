@@ -142,7 +142,7 @@ public class OrderDAO extends DAO {
                      "JOIN Requests r ON u.user_id = r.user_id " +
                      "JOIN Quotes q ON r.request_id = q.request_id " +
                      "JOIN Orders o ON q.quote_id = o.quote_id " +
-                     "WHERE (o.status = 'pending' AND TIMESTAMPDIFF(DAY, q.end_date, CURDATE()) > 7) " +
+                     "WHERE ( TIMESTAMPDIFF(DAY, q.end_date, CURDATE()) > 7) " +
                      "GROUP BY u.user_id, u.first_name, u.last_name, u.email";
 
         connect();
