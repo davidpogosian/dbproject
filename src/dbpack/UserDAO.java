@@ -1,8 +1,12 @@
 package dbpack;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO extends DAO {
 
@@ -13,6 +17,37 @@ public class UserDAO extends DAO {
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Statistic> geStatistics() throws SQLException {
+        List<Statistic> statisticList = new ArrayList<>();
+        String sql = "SELECT u.user_id, u.username, COUNT(t.tree_id) AS total_trees, "
+                + "SUM(q.price) AS total_due_amount, "
+                + "SUM(CASE WHEN o.status = 'paid' THEN q.price ELSE 0 END) AS total_paid_amount, "
+                + "MAX(o.date_paid) AS work_done_date "
+                + "FROM Users u "
+                + "JOIN Requests r ON u.user_id = r.user_id "
+                + "JOIN Trees t ON r.request_id = t.request_id "
+                + "JOIN Quotes q ON r.request_id = q.request_id "
+                + "LEFT JOIN Orders o ON q.quote_id = o.quote_id "
+                + "WHERE o.status = 'paid' "
+                + "GROUP BY u.user_id, u.username;";
+
+        connect();
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Statistic new_statistic = new Statistic(
+                    resultSet.getInt("user_id"),
+                    resultSet.getString("username"),
+                    resultSet.getInt("total_trees"),
+                    resultSet.getDouble("total_due_amount"),
+                    resultSet.getDouble("total_paid_amount"),
+                    resultSet.getDate("work_done_date")
+            );
+            statisticList.add(new_statistic);
+        }
+        return statisticList;
     }
 
     public String getUserId(String email) throws SQLException {

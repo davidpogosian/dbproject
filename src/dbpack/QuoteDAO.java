@@ -159,6 +159,7 @@ public class QuoteDAO extends DAO {
     
         return users;
     }
+    
     public List<User> usersWithoutDeniedOrPendingQuotes() throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT u.user_id, u.first_name, u.last_name, u.email " +

@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import java.sql.SQLException;
 import java.io.IOException;
 
+import java.util.List;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import dbpack.RequestDAO;
+import dbpack.Statistic;
 import dbpack.UserDAO;
 import dbpack.TreeDAO;
 import dbpack.QuoteDAO;
@@ -114,6 +117,9 @@ public class MyServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
+			case "statistics":
+				statisticsPage(req, res);
+				break;
 			case "/orderView":
 				try {
 					order(req, res);
@@ -122,6 +128,16 @@ public class MyServlet extends HttpServlet {
 				}
 				break;
 			
+		}
+	}
+
+	public void statisticsPage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		try {
+			List<Statistic> statistics = userDAO.geStatistics();
+			req.setAttribute("statistics", statistics);
+			req.getRequestDispatcher("statisticsPage.jsp").forward(req, res);
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -331,6 +347,7 @@ public class MyServlet extends HttpServlet {
 	
 			// Setting attributes for the JSP
 			req.setAttribute("hightreeuser", treeDAO.getUsersWithHighestTrees());
+
 	
 			// Forwarding request to tree.jsp
 			req.getRequestDispatcher("/high.jsp").forward(req, res);
